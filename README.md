@@ -66,10 +66,10 @@ Docker · Docker Compose
 
 ---
 
-🔗 **Repository:** https://github.com/Derdev74/Gemini_Hackaton
+🔗 **Repository:** _paste your link here_
 
-**gemini-hackathon-link:**https://devpost.com/software/just-travel
+**gemini-hackathon-link:** https://devpost.com/software/just-travel
 
-#Try the app yourself: 
+# Try the app yourself:
 
 **link:** https://just-travel-frontend-6stdcah2ya-uc.a.run.app/
