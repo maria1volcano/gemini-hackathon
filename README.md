@@ -66,7 +66,7 @@ Docker · Docker Compose
 
 ---
 
-🔗 **Repository:** _paste your link here_
+🔗 **Repository:** https://github.com/Derdev74/Gemini_Hackaton
 
 **gemini-hackathon-link:** https://devpost.com/software/just-travel
 
