@@ -1,0 +1,111 @@
+# ═══════════════════════════════════════════════════════════════
+# Just Travel App - Docker Compose Configuration
+# ═══════════════════════════════════════════════════════════════
+
+version: '3.8'
+
+services:
+  # ── Backend Service (FastAPI) ─────────────────────────────────
+  backend:
+    build:
+      context: ./just-travel-app
+      dockerfile: Dockerfile
+    container_name: just-travel-backend
+    ports:
+      - "8000:8000"
+    environment:
+      # Critical API Keys
+      - GOOGLE_API_KEY=${GOOGLE_API_KEY}
+
+      # Optional API Keys (graceful fallback to mocks)
+      - OPENWEATHERMAP_API_KEY=${OPENWEATHERMAP_API_KEY}
+      - GOOGLE_MAPS_API_KEY=${GOOGLE_MAPS_API_KEY}
+      - NEO4J_URI=${NEO4J_URI}
+      - NEO4J_USERNAME=${NEO4J_USERNAME}
+      - NEO4J_PASSWORD=${NEO4J_PASSWORD}
+      - APIFY_API_TOKEN=${APIFY_API_TOKEN}
+      - AMADEUS_CLIENT_ID=${AMADEUS_CLIENT_ID}
+      - AMADEUS_CLIENT_SECRET=${AMADEUS_CLIENT_SECRET}
+      - RAPIDAPI_KEY=${RAPIDAPI_KEY}
+
+      # Authentication
+      - NEXTAUTH_SECRET=${NEXTAUTH_SECRET}
+      - NEXTAUTH_URL=${NEXTAUTH_URL:-http://localhost:3000}
+      - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}
+      - GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET}
+
+      # Application Settings
+      - DEBUG=${DEBUG:-false}
+      - LOG_LEVEL=${LOG_LEVEL:-INFO}
+
+      # Phase 3: Background Tasks (Redis)
+      - REDIS_URL=redis://redis:6379/0
+      - USE_CELERY=${USE_CELERY:-false}
+    volumes:
+      # Persist SQLite database
+      - ./just-travel-app/data:/app/data
+      # Mount database file if it exists
+      - ./just-travel-app/just_travel.db:/app/just_travel.db
+    networks:
+      - just-travel-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import requests; requests.get('http://localhost:8000/api/health', timeout=5)"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+  # ── Frontend Service (Next.js) ────────────────────────────────
+  frontend:
+    build:
+      context: ./just-travel-app/frontend
+      dockerfile: Dockerfile
+    container_name: just-travel-frontend
+    ports:
+      - "3000:3000"
+    environment:
+      # Backend API URL
+      - NEXT_PUBLIC_API_URL=http://backend:8000
+
+      # NextAuth Configuration
+      - NEXTAUTH_SECRET=${NEXTAUTH_SECRET}
+      - NEXTAUTH_URL=${NEXTAUTH_URL:-http://localhost:3000}
+      - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}
+      - GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET}
+    depends_on:
+      backend:
+        condition: service_healthy
+    networks:
+      - just-travel-network
+    restart: unless-stopped
+
+  # ── Redis Service (Phase 3: Background Tasks) ────────────────
+  redis:
+    image: redis:7-alpine
+    container_name: just-travel-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    command: redis-server --appendonly yes
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+    networks:
+      - just-travel-network
+    restart: unless-stopped
+
+# ── Networks ──────────────────────────────────────────────────
+networks:
+  just-travel-network:
+    driver: bridge
+
+# ── Volumes ───────────────────────────────────────────────────
+volumes:
+  db-data:
+    driver: local
+  redis-data:
+    driver: local

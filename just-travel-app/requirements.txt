@@ -1,0 +1,59 @@
+# Just Travel App - Python Dependencies
+# ======================================
+
+# Google Generative AI SDK
+google-genai>=0.1.0
+
+# Neo4j Python driver for graph database operations
+neo4j>=5.0.0
+
+# Apify client for social media scraping actors
+apify-client>=1.0.0
+
+# Google Maps/Places API client
+googlemaps>=4.10.0
+
+# Environment variable management
+python-dotenv>=1.0.0
+
+# HTTP requests library
+requests>=2.31.0
+
+# Async HTTP client
+aiohttp>=3.9.0
+
+# Data validation and serialization
+pydantic>=2.0.0
+
+# FastAPI for backend API endpoints (frontend communication)
+fastapi>=0.109.0
+uvicorn>=0.27.0
+
+# Type hints support
+typing-extensions>=4.9.0
+
+# Rate Limiting
+slowapi>=0.1.9
+
+# Flight Data
+amadeus>=9.0.0
+
+# Image processing (used by creative_tools for Veo image-to-video)
+Pillow>=10.0.0
+
+# Phase 3: Background Tasks (Redis + optional Celery)
+redis>=5.0.0
+celery>=5.3.0
+
+# Caching
+cachetools>=5.3.0
+
+# Database & Auth
+sqlmodel>=0.0.14
+aiosqlite>=0.19.0
+asyncpg>=0.29.0  # PostgreSQL async driver (for Cloud SQL)
+passlib[bcrypt]>=1.7.4
+bcrypt==4.0.1
+python-jose[cryptography]>=3.3.0
+python-multipart>=0.0.9
+email-validator>=2.1.0

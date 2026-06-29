@@ -1,0 +1,21 @@
+# Local databases and generated state
+*.db
+*.sqlite
+*.sqlite3
+
+# Windows downloaded-file metadata
+*:Zone.Identifier
+*_Zone.Identifier
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# Dependency and build outputs
+node_modules/
+.next/
+dist/
+build/
+__pycache__/
+*.py[cod]
