@@ -45,56 +45,6 @@
 
 ---
 
-## 🚀 Quick Start
-
-### Option 1: Docker (Recommended)
-
-**One command to run everything:**
-
-```bash
-cd just-travel-app
-docker-compose up --build
-```
-
-Visit **http://localhost:3000** 🎉
-
-That's it! Docker will:
-- Build the FastAPI backend (Python 3.12)
-- Build the Next.js frontend with PWA support
-- Start Redis for background tasks
-- Set up networking and health checks
-
-### Option 2: Development Mode
-
-**Terminal 1 - Backend:**
-```bash
-cd just-travel-app
-
-# Install dependencies
-pip install -r requirements.txt
-
-# Set up environment
-cp .env.example .env
-# Edit .env with your API keys
-
-# Run backend
-uvicorn main:app --reload
-```
-
-**Terminal 2 - Frontend:**
-```bash
-cd just-travel-app/frontend
-
-# Install dependencies
-npm install
-
-# Run frontend
-npm run dev
-```
-
-Visit **http://localhost:3000**
-
----
 
 ## 📋 Prerequisites
 
